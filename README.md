@@ -1,16 +1,21 @@
-# Vue 3 + TypeScript + Vite
+This sample is about a Problem Mock Service Worker is producing when try to use Auth0 on server middleware with express-openid-connect.
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Once you try to login or logout, so that the redirect to auth0 would happen the browser stucks in endless load.
 
-## Recommended IDE Setup
+This does not happen without Mock Service Worker. Then auth0 is working perfectly fine. So it seems to be related to Mock Service Worker. I also found a related issue on auth0/nextjs-auth0 where a user is reporting the same problem but within another setup: https://github.com/auth0/nextjs-auth0/issues/606
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+"Debugging shows the last event to have successfully cloned a request to /.well-known/openid-configuration, but then hangs after the event closes. Any ideas on what could be causing this? Underlying got client?"
 
-## Type Support For `.vue` Imports in TS
+Honestly this problem is a real big issue for my current customer project. If we are not able to solve it we will need to move away from MSW, as changing the AUTH0 approach is no option. But i would like to prevent that move.
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+Steps to reproduce:
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+run npm install
+run npm run dev
+within preview, try to click login button. -> browser will endlessly load
+stop project
+comment out MSW
+start project again, login link to Auth0 will work.
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+I really would appreciate help/fix on this.
+Best regards, Annick
